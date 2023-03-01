@@ -1,0 +1,22 @@
+{
+    "name": "rhino/order",
+    "type": "project",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Rhino\\Order\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Kemal Yenilmez",
+            "email": "kemalyen@gmail.com"
+        }
+    ],
+    "require": {
+        "doctrine/orm": "^2.11.0",
+        "doctrine/dbal": "^3.2",
+        "symfony/yaml": "^5.4",
+        "symfony/cache": "^5.4"
+    }
+}
