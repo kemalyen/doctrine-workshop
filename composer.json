@@ -7,16 +7,12 @@
             "Rhino\\Order\\": "src/"
         }
     },
-    "authors": [
-        {
-            "name": "Kemal Yenilmez",
-            "email": "kemalyen@gmail.com"
-        }
-    ],
+    "authors": [{
+        "name": "Kemal Yenilmez",
+        "email": "kemalyen@gmail.com"
+    }],
     "require": {
-        "doctrine/orm": "^2.11.0",
-        "doctrine/dbal": "^3.2",
-        "symfony/yaml": "^5.4",
-        "symfony/cache": "^5.4"
+        "doctrine/instantiator": "^2.0",
+        "doctrine/mongodb-odm": "^2.5"
     }
 }

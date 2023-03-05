@@ -1,35 +1,22 @@
 <?php
-// bootstrap.php
-use Doctrine\DBAL\DriverManager;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\ORMSetup;
-
+// bootstrap.php 
 require_once "vendor/autoload.php";
+use Doctrine\ODM\MongoDB\Configuration;
+use Doctrine\ODM\MongoDB\DocumentManager;
+use MongoDB\Client;
+use Doctrine\Common\Annotations\AnnotationRegistry;
+use Doctrine\ODM\MongoDB\Mapping\Driver\AnnotationDriver;
+ 
 
-// Create a simple "default" Doctrine ORM configuration for Attributes
-$config = ORMSetup::createAttributeMetadataConfiguration(
-    paths: array(__DIR__."/src/Entity"),
-    isDevMode: true,
-);
-// or if you prefer annotation, YAML or XML
-// $config = ORMSetup::createAnnotationMetadataConfiguration(
-//    paths: array(__DIR__."/src"),
-//    isDevMode: true,
-// );
-// $config = ORMSetup::createXMLMetadataConfiguration(
-//    paths: array(__DIR__."/config/xml"),
-//    isDevMode: true,
-//);
-// $config = ORMSetup::createYAMLMetadataConfiguration(
-//    paths: array(__DIR__."/config/yaml"),
-//    isDevMode: true,
-// );
+ 
+$client = new Client('mongodb+srv://', [], ['typeMap' => DocumentManager::CLIENT_TYPEMAP]);
+$config = new Configuration();
 
-// configuring the database connection
-$connection = DriverManager::getConnection([
-    'driver' => 'pdo_sqlite',
-    'path' => __DIR__ . '/data/db.sqlite',
-], $config);
+$config->setProxyDir(__DIR__ . '/data/Proxies');
+$config->setProxyNamespace('Proxies');
+$config->setHydratorDir(__DIR__ . '/data/Hydrators');
+$config->setHydratorNamespace('Hydrators');
+//$config->setDefaultDB('apibackend');
+$config->setMetadataDriverImpl(AnnotationDriver::create(__DIR__ . '/src/Entity'));
 
-// obtaining the entity manager
-$entityManager = new EntityManager($connection, $config);
+$entityManager = DocumentManager::create($client, $config);

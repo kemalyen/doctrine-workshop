@@ -11,28 +11,34 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
+use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
-#[Entity]
-#[Table('order_lines')]
+/** @ODM\Document(db="apibackend", collection="order_lines") */
 class OrderLine
 {
-    #[Id]
-    #[Column, GeneratedValue]
-    private int $id;
+    /** @ODM\Id */
+    private $id;
 
-    #[Column(name: 'order_id')]
+    //#[Column(name: 'order_id')]
+     /** @ODM\Field(name="order_id")  */
     private int $orderId;
 
-    #[Column]
+    /** @ODM\Field(type="string", name="description")  */
     private string $description;
 
-    #[Column]
+    /** @ODM\Field(type="string", name="sku")  */
+    private $sku;
+
+    /** @ODM\Field(type="int") */
     private int $quantity;
 
-    #[Column(name: 'unit_price', type: Types::DECIMAL, precision: 10, scale: 2)]
+    //#[ODM\Field(name: 'unit_price', type: Types::DECIMAL, precision: 10, scale: 2)]
+    /** @ODM\Field(type="float", name="unit_price") */
     private float $unitPrice;
 
-    #[ManyToOne(inversedBy: 'items')]
+    /**
+     * @ODM\ReferenceOne(targetDocument=Order::class, inversedBy="order")
+     */
     private Order $order;
 
     public function getId(): int
@@ -43,6 +49,18 @@ class OrderLine
     public function getOrderId(): int
     {
         return $this->orderId;
+    }
+
+    public function getSku(): string
+    {
+        return $this->sku;
+    }
+
+    public function setSku(string $sku): OrderLine
+    {
+        $this->sku = $sku;
+
+        return $this;
     }
 
     public function getDescription(): string
